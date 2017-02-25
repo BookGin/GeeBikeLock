@@ -33,11 +33,18 @@
 {% for bike in bikes %}
   <li><h2>
   Name: {{bike.name}} <br>
-  State:
+  State: uid:{{bike.uid}} <br>
   {% if bike.available %}
     Unlocked
   {% else %}
     Locked
+  {% endif %}
+  <br>
+  Security:
+  {% if bike.is_stolen %}
+    <p style="color:red;">Being Stolen!!!</p>
+  {% else %}
+    <p style="color:green;">Safe</p>
   {% endif %}
   <br>
 

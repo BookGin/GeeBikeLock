@@ -17,3 +17,5 @@ class Bike(models.Model):
   y = models.FloatField(default=0.0)
   z = models.FloatField(default=0.0)
   uid = models.IntegerField(default=0)
+  moving_count = models.IntegerField(default=0)
+  is_stolen = models.BooleanField(default=False)

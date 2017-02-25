@@ -3,7 +3,7 @@ from django.urls import reverse
 from django.http import HttpResponse
 from django.http import JsonResponse
 from .models import Bike, User2bike
-
+import math
 import json
 def index(request):
     gpss = []
@@ -32,17 +32,43 @@ def remove(request,  bike_id):
     bike = Bike.objects.get(name = bike_id).delete()
     return redirect(reverse('index'))
 
+def check_moving(x1, y1, z1, x2, y2, z2):
+    thr = 0
+    if math.sqrt((x1-x2)**2 + (y1-y2)**2 + (z1-z2)**2) > thr:
+        return True
+    else:
+        return False
+
+def update_uid(uid,  recv_uid):
+    if uid == 0:
+        return recv_uid
+    else:
+        return uid
+
 def update(request, bike_id):
     recv_data = json.loads(request.body.decode())
     bike, created = Bike.objects.get_or_create(name = bike_id)
     bike.lat, bike.lng = recv_data['gps'][0], recv_data['gps'][1]
+    if check_moving(bike.x, bike.y, bike.z, recv_data['axis'][0], recv_data['axis'][1], recv_data['axis'][2]):
+        bike.moving_count += 1
+    else:
+        bike.moving_count = 0
+    bike.x,  bike.y,  bike.z = recv_data['axis'][0],  recv_data['axis'][1],  recv_data['axis'][2]
+    bike.uid = update_uid(bike.uid, recv_data['uid'])
+    if bike.uid != 0 and bike.uid == recv_data['uid']:
+        bike.available = False if bike.available else True
+    print(bike.uid)
+    if bike.moving_count > 0 and bike.available == False:
+        bike.is_stolen = True
+    if bike.available == True:
+        bike.is_stolen = False
     bike.save()
 
     return JsonResponse({'available': bike.available})
 
 def list(request):
     bikes = request.user.own_bike.all()
-    bikes = [ {'name': bike.name, 'available': bike.available} for bike in bikes]
+    bikes = [ {'name': bike.name, 'available': bike.available, 'uid': bike.uid} for bike in bikes]
     return render(request, 'list.html', {'bikes': bikes})
 
 def register_bike(request):
