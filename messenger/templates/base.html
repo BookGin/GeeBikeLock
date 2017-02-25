@@ -1,0 +1,37 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="zh">
+<head>
+    <meta http-equiv="Content-Type" content="text/html" charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    {% block link %}{% endblock %}
+    <title>Sample|{% block title %}Top{% endblock%}</title>
+</head>
+{% block style %}
+{% endblock %}
+<body style="background-color:#B2BFCE;">
+    <div class='container-fluid'  style="opacity:0.5;">
+        <div class='row panel panel-default'>
+        <ul class="nav navbar-nav">
+                {% for channel in channels %}
+  	            <li><a href="{% url 'channel_message' channel_id=channel.id%}">{{ channel.name }}</a></li>
+                  {% endfor %}
+                  <li><a style="color: red" href="{% url 'create_channel' %}">Create Channel</a></li>
+                  <li><a style="color: red" href="{% url 'remove_channel' %}">Remove Channel</a></li>
+    </ul>
+        <ul class="nav navbar-nav navbar-right">
+          <li><a href="#"><b>{{user.username}}</b></a></li>
+          <li><a href="{% url 'logout' %}"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
+      </ul>
+    </div>
+        </div>
+    <div class='container-fluid'>
+    {% block content %}
+    {% endblock %}
+    </div>
+</body>
+<link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
+<script src="//cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+{% block script %}
+{% endblock %}
+</html>

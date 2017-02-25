@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% block title %}chat room{% endblock %}
+{% block content %}
+{%  load staticfiles %}
+<div class="list-group col-md-10 col-md-offset-1 well">
+    <div class="list-group-item">
+{% include "chat_list.html" %}
+    </div>
+</div>
+
+<form id="chatForm" class="form-horizontal panel container" method="POST" action=".">{% csrf_token %}
+    <div class="form-group col-md-10">
+        <textarea type="text" name="content" id="content" value="" class="form-control" id="exampleMessage" placeholder=""></textarea>
+    </div>
+    <div class="form-group col-md-4">
+        <input type="hidden" name="post_type" value="send_chat"/>
+        <input type="submit" class="btn btn-lg btn-primary" value="send"/>
+        <p>Enter to send message. Ctrl+Enter to create newline.</p>
+    </div>
+</form>
+
+<iframe src="/messenger/upload"> </iframe>
+{% endblock %}
+{% block script %}
+<script>
+ $(document).ready(function() {
+    updateMsg();    
+
+    $("#chatForm").submit(function() {
+
+        $.post("./post/",
+            $('#chatForm').serialize(),
+            function(data) {
+            $("#content").val("");  
+
+        });
+        return false;       
+    });
+});
+
+
+function updateMsg() {
+    $.post(
+        "./post/",
+        {
+            post_type: "get_chat",
+            last_chat_id: $(".chat_id").last().val()
+        },
+        function(data) {
+            if (data.trim(' ') != ''){
+                console.log(data);
+                var audio = new Audio("http://static1.grsites.com/archive/sounds/household/household052.mp3");
+     audio.play();
+            }
+            $('.list-group-item').append(data);    
+    });
+    setTimeout("updateMsg()", 1000);        
+}
+
+$(document).ready(function(){
+    $('textarea').keypress(function(e){
+      if(e.which == 13 && !e.shiftKey){
+           $('form').submit(
+           );
+           var audio = new Audio("http://static1.grsites.com/archive/sounds/household/household050.mp3");
+audio.play();
+       }
+    });
+});
+$("form").on('submit', function(e){
+    e.preventDefault();
+});
+</script>
+{% endblock %}

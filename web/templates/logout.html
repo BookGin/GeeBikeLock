@@ -1,0 +1,29 @@
+
+{% extends "admin/base_site.html" %}
+{% load i18n %}
+
+{% load i18n static %}
+
+{% block extrastyle %}{{ block.super }}<link rel="stylesheet" type="text/css" href="{% static "admin/css/login.css" %}" />
+{{ form.media }}
+{% endblock %}
+
+{% block bodyclass %}{{ block.super }} login{% endblock %} 
+
+{% block usertools %}{% endblock %}
+
+{% block nav-global %}{% endblock %}
+
+{% block content_title %} <h2>User Logout</h2>{% endblock %}
+
+{% block breadcrumbs %}{% endblock %}
+
+{% block title %} Logout {% endblock %}
+
+{% block content %}
+
+<p>{% trans "Thanks for spending some quality time with the Web site today." %}</p>
+
+<p><a href="{% url 'login' %}">{% trans 'Log in again' %}</a></p>
+
+{% endblock %}

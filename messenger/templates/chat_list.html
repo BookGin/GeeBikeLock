@@ -1,0 +1,6 @@
+{% for chat in chats %}
+<h4 class="list-group-item-heading"><b>{{chat.sender}}</b>:&emsp;{{chat.content}}</h4>
+<p class="list-group-item-text">{{chat.time|timesince}} ago</p>
+<input type="hidden" class="chat_id" value="{{chat.id}}"/>
+<br>
+{% endfor %}

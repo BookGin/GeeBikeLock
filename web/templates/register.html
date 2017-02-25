@@ -1,0 +1,35 @@
+{% extends "admin/base_site.html" %}
+{% load i18n static %}
+
+{% block extrastyle %}{{ block.super }}<link rel="stylesheet" type="text/css" href="{% static "admin/css/login.css" %}" />
+{{ form.media }}
+{% endblock %}
+
+{% block bodyclass %}{{ block.super }} login{% endblock %}
+
+{% block usertools %}{% endblock %}
+
+{% block nav-global %}{% endblock %}
+
+{% block content_title %} <h1>User Registration</h1>{% endblock %}
+
+{% block breadcrumbs %}{% endblock %}
+
+{% block title %}Registration{% endblock %}
+
+{% block content %}
+
+{% if user.is_authenticated %}
+<p class="errornote">
+You have already authenticated as {{ user.username }}. <br>
+If you want to register another account, please logout first. <br><br>
+<a href="{% url 'logout' %}">logout</a>
+</p>
+{% else %}
+<form action="" method="post">
+	{% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Register">
+</form>
+{% endif %}
+{% endblock %}
