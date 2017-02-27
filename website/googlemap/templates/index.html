@@ -13,7 +13,7 @@
                 {% for channel in channels %}
   	            <li><a href="{% url 'channel_message' channel_id=channel.id%}">{{ channel.name }}</a></li>
                   {% endfor %}
-                  <li><a style="color: red" href="{% url 'register_bike' %}">Register Bike</a></li>
+                  <li><a style="color: red" href="{% url 'register_bike' %}">Register New Bike</a></li>
                   <li><a style="color: black" href="{% url 'list' %}">My Bikes</a></li>
     </ul>
         <ul class="nav navbar-nav navbar-right">

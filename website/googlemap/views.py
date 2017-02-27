@@ -19,6 +19,7 @@ def index(request):
 def unlock(request, bike_id):
     bike = Bike.objects.get(name = bike_id)
     bike.available = True
+    bike.is_stolen = False
     bike.save()
     return redirect(reverse('index'))
 
@@ -57,24 +58,24 @@ def update(request, bike_id):
     bike.uid = update_uid(bike.uid, recv_data['uid'])
     if bike.uid != 0 and bike.uid == recv_data['uid']:
         bike.available = False if bike.available else True
-    print(bike.uid)
+    print(bike.moving_count)
     if bike.moving_count > 0 and bike.available == False:
         bike.is_stolen = True
     if bike.available == True:
         bike.is_stolen = False
     bike.save()
 
-    return JsonResponse({'available': bike.available})
+    return JsonResponse({'available': bike.available, 'is_stolen': bike.is_stolen})
 
 def list(request):
     bikes = request.user.own_bike.all()
-    bikes = [ {'name': bike.name, 'available': bike.available, 'uid': bike.uid} for bike in bikes]
     return render(request, 'list.html', {'bikes': bikes})
 
 def register_bike(request):
     if request.method == 'POST':
         user, bike_id = request.user, request.POST.get("bike_id", "")
-        newbike = Bike.objects.create(user=user, name=bike_id)
+        newbike, created = Bike.objects.get_or_create(user = user, name = bike_id)
+        #newbike = Bike.objects.create(user=user, name=bike_id)
         newbike.save()
 
         return redirect(reverse('index'))
