@@ -2,6 +2,13 @@
 
 [Make NTU](https://www.facebook.com/makentu.ntuee/) is a hackathon competition in Taipei, Taiwan.
 
+## Team Members
+
+- Chin Ning
+- bookgin
+- exe1023
+- Vincy
+
 ## Our Product
 
 ![GeeBikeLock-logo](http://i.imgur.com/GZ3bOg2.png)
@@ -14,7 +21,7 @@ In this hackathon, we made an anti-theft IoT device *GeeBikeLock* which can be i
 - We also have a cloud server. You can login the website to fully control the lock.
 
 ## Directory Structure
-
+- `demo.mp4`: The live demo video. (in Mandarin)
 - `GeeBikeLock.pdf`: The slide.
 - `geebikelock.ino`: The source code running on Arduino, our IoT lock.
 - `website`: The cloud backend server as well as the website.
